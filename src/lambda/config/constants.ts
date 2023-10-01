@@ -7,7 +7,9 @@
  * executions. When the number of visited urls for an execution is greater than this, we launch a new step function
  * execution to continue crawling the website.
  */
-export const STATE_MACHINE_URL_THRESHOLD = 2000;
+
+// export const STATE_MACHINE_URL_THRESHOLD = 2000;
+export const STATE_MACHINE_URL_THRESHOLD = 400;
 
 /**
  * The number of urls to sync in parallel. If increasing this number, consider increasing the read/write capacity for the
