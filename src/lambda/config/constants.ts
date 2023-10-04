@@ -9,7 +9,7 @@
  */
 
 // export const STATE_MACHINE_URL_THRESHOLD = 2000;
-export const STATE_MACHINE_URL_THRESHOLD = 400;
+export const STATE_MACHINE_URL_THRESHOLD = 20000;
 
 /**
  * The number of urls to sync in parallel. If increasing this number, consider increasing the read/write capacity for the
@@ -17,6 +17,7 @@ export const STATE_MACHINE_URL_THRESHOLD = 400;
  *
  * Note that this number must be less than the STATE_MACHINE_URL_THRESHOLD
  */
+//export const PARALLEL_URLS_TO_SYNC = 200;
 export const PARALLEL_URLS_TO_SYNC = 200;
 
 /**
