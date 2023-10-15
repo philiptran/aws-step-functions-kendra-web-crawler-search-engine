@@ -9,7 +9,9 @@
  */
 
 // export const STATE_MACHINE_URL_THRESHOLD = 2000;
-export const STATE_MACHINE_URL_THRESHOLD = 20000;
+// export const STATE_MACHINE_URL_THRESHOLD = 20000;
+const ENV_URL_THRESHOLD = parseInt(process.env.STATE_MACHINE_URL_THRESHOLD || '')
+export const STATE_MACHINE_URL_THRESHOLD = Number.isInteger(ENV_URL_THRESHOLD) ? ENV_URL_THRESHOLD: 2000;
 
 /**
  * The number of urls to sync in parallel. If increasing this number, consider increasing the read/write capacity for the
@@ -18,7 +20,9 @@ export const STATE_MACHINE_URL_THRESHOLD = 20000;
  * Note that this number must be less than the STATE_MACHINE_URL_THRESHOLD
  */
 //export const PARALLEL_URLS_TO_SYNC = 200;
-export const PARALLEL_URLS_TO_SYNC = 200;
+//export const PARALLEL_URLS_TO_SYNC = 500;
+const ENV_URLS_TO_SYNC = parseInt(process.env.PARALLEL_URLS_TO_SYNC || '')
+export const PARALLEL_URLS_TO_SYNC = Number.isInteger(ENV_URLS_TO_SYNC) ? ENV_URLS_TO_SYNC: 300;
 
 /**
  * Provisioned write capacity for each context table.

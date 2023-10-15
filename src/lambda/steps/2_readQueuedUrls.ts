@@ -16,12 +16,14 @@ export const readQueuedUrls = async (crawlContext: CrawlContext) => {
   // Get a batch of urls we haven't visited yet
   const urlsToVisit = await readBatchOfUrlsToVisit(crawlContext.contextTableName);
 
+  console.log('urlsToVisit.length = ', urlsToVisit.length);
   console.log('Urls to visit', urlsToVisit);
 
   const totalUrlCount = urlCount + urlsToVisit.length;
   const totalBatchUrlCount = batchUrlCount + urlsToVisit.length;
   console.log('Total urls:', totalUrlCount);
   console.log('Total urls in current step function execution:', totalBatchUrlCount);
+  console.log('Total urls exceeding threshold:', totalBatchUrlCount > STATE_MACHINE_URL_THRESHOLD);
 
   // Write the total urls back to the history table
   await putHistoryEntry({

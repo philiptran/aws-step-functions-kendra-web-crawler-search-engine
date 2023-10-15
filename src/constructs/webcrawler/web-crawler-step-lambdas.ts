@@ -70,6 +70,8 @@ export default class WebCrawlerStepLambdas extends Construct {
     const readQueuedUrls = buildLambda('ReadQueuedUrlsLambda', 'readQueuedUrlsHandler');
     props.historyTable.grantReadWriteData(readQueuedUrls);
     readQueuedUrls.addToRolePolicy(props.createContextTablePolicy(['Query']));
+    readQueuedUrls.addEnvironment("STATE_MACHINE_URL_THRESHOLD", "4000");
+    readQueuedUrls.addEnvironment("PARALLEL_URLS_TO_SYNC", "500");
 
     // Lambda for cleaning up (and optionally syncing kendra) when crawling has finished
     const completeCrawl = buildLambda('CompleteCrawlLambda', 'completeCrawlHandler');
