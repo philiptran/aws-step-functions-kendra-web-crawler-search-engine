@@ -5,6 +5,9 @@ import { CrawlContext } from '../crawler/types';
 import { readBatchOfUrlsToVisit } from '../utils/contextTable';
 import { getHistoryEntry, putHistoryEntry } from '../utils/historyTable';
 
+import * as AWS from 'aws-sdk';
+const s3 = new AWS.S3();
+
 /**
  * Read all non visited urls from the context database so that they can be distributed to the sync lambdas
  */
@@ -32,6 +35,30 @@ export const readQueuedUrls = async (crawlContext: CrawlContext) => {
     batchUrlCount: totalBatchUrlCount,
   });
 
+  let queuedPaths = urlsToVisit.map((path) => ({
+    path,
+    crawlContext
+  }))
+
+  // Save queuedPaths to S3
+  const bucket = "tfc-data";
+  const key = `${crawlContext.crawlId}.queuedPaths.json`;
+  let res = await s3.putObject({ Bucket: "tfc-data", Key: key, Body: JSON.stringify(queuedPaths) }).promise();
+  console.log('queuedPaths saved to S3.', res);
+  
+  return {
+    totalUrlCountExceedsThreshold: totalBatchUrlCount > STATE_MACHINE_URL_THRESHOLD,
+    queueIsNonEmpty: urlsToVisit.length > 0,
+    crawlContext,
+    queuedPaths: {
+      s3: {
+        bucket,
+        key
+      }
+    } 
+  };
+
+  /*
   return {
     totalUrlCountExceedsThreshold: totalBatchUrlCount > STATE_MACHINE_URL_THRESHOLD,
     queueIsNonEmpty: urlsToVisit.length > 0,
@@ -41,4 +68,5 @@ export const readQueuedUrls = async (crawlContext: CrawlContext) => {
     })),
     crawlContext,
   };
+  */
 };
