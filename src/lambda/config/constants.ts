@@ -18,6 +18,9 @@ export const STATE_MACHINE_URL_THRESHOLD = Number.isInteger(ENV_URL_THRESHOLD) ?
  * Note that this number must be less than the STATE_MACHINE_URL_THRESHOLD
  * For Distributed Map state, child execution events are not counted as part of the event history and
  * each batch run requires 5 events to be created (MapStateEntered, MapStateStarted, MapRunStarted, MapRunSucceeded/Failed, MapStateExited)
+ * number of batch runs = STATE_MACHINE_URL_THRESHOLD / PARALLEL_URLS_TO_SYNC.
+ * Given 25,000 history events and increased concurrency processing, the STATE_MACHINE_URL_THRESHOLD can go much higher.
+ * For example, with PARALLEL_URLS_TO_SYNC = 1000, the STATE_MACHINE_URL_THRESHOLD can be set to (25000/5 * 1000 - 5000 * 20)
  */
 const ENV_URLS_TO_SYNC = parseInt(process.env.PARALLEL_URLS_TO_SYNC || '')
 export const PARALLEL_URLS_TO_SYNC = Number.isInteger(ENV_URLS_TO_SYNC) ? ENV_URLS_TO_SYNC: 1000;
